@@ -12,6 +12,7 @@ class CalcController{
         this._currentDate;
         this.initialize();
         this.initButtonsEvents();
+        this.initKeyboard();
 
         //o underline depois do this. faz o atributo ser privado.
         //e tbm precisa colocar os geters e seters nele
@@ -223,6 +224,8 @@ class CalcController{
 
         let lastOperation = this.getLastOperation();
 
+
+        //split('').indexOf('.') -> transforma uma string em array, depois verifica se no array tem o .
         if(typeof lastOperation === 'string' && lastOperation.split('').indexOf('.') > -1) return;
         
         if(this.isOperator(lastOperation) || !lastOperation){
@@ -238,6 +241,54 @@ class CalcController{
         this.setLastNumberToDisplay();
 
         console.log("LastOperation", lastOperation.toString);
+
+    }
+
+    initKeyboard(){
+
+        document.addEventListener('keyup', e=>{
+
+            switch(e.key){
+            
+                case 'Escape':
+                    this.clearAll();
+                    break;
+                case 'Backspace':
+                    this.clearEntry();
+                    break;
+                case '+':
+                case '-':
+                case '*':
+                case '/':
+                case '%':
+                    this.addOperation(e.key);
+                    break;
+                
+                    case 'Enter':
+                    case '=':
+                    this.calc();
+                    break;
+                case '.':
+                case ',':
+                    this.addDot();
+                    break;
+    
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    this.addOperation(parseInt(e.key));
+                    break;
+    
+            }
+
+        });
 
     }
 
